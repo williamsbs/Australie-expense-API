@@ -1,7 +1,14 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const options = {
+  tls: true,
+  tlsAllowInvalidCertificates: true,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+};
+
+const client = new MongoClient(uri, options);
 
 let cachedDb = null;
 
@@ -10,10 +17,15 @@ async function connectToDatabase() {
     return cachedDb;
   }
 
-  await client.connect();
-  const db = client.db('expense-tracker');
-  cachedDb = db;
-  return db;
+  try {
+    await client.connect();
+    const db = client.db('expense-tracker');
+    cachedDb = db;
+    return db;
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw error;
+  }
 }
 
 export default async function handler(req, res) {
