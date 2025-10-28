@@ -48,3 +48,4 @@ export default async function handler(req, res) {
 **6. `.env.example`**
 ```
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority
+// cool
