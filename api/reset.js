@@ -1,14 +1,7 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
-const uri = process.env.MONGODB_URI;
-const options = {
-  tls: true,
-  tlsAllowInvalidCertificates: true,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-};
-
-const client = new MongoClient(uri, options);
+const uri = 'mongodb+srv://bobsabates_db_user:LamHTiBcZpKMYnA1@cluster0.apkzeuy.mongodb.net/expense-tracker?retryWrites=true&w=majority&appName=Cluster0';
+const client = new MongoClient(uri);
 
 let cachedDb = null;
 
@@ -17,15 +10,10 @@ async function connectToDatabase() {
     return cachedDb;
   }
 
-  try {
-    await client.connect();
-    const db = client.db('expense-tracker');
-    cachedDb = db;
-    return db;
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    throw error;
-  }
+  await client.connect();
+  const db = client.db('expense-tracker');
+  cachedDb = db;
+  return db;
 }
 
 export default async function handler(req, res) {
@@ -55,9 +43,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, error: error.message });
   }
 }
-```
-
-**6. `.env.example`**
-```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority
-// cool
