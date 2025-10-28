@@ -1,0 +1,13 @@
+{
+  "name": "expense-tracker-api",
+  "version": "1.0.0",
+  "description": "API pour le suivi des dépenses en Australie",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "mongodb": "^6.3.0",
+    "cors": "^2.8.5"
+  }
+}
